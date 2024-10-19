@@ -40,10 +40,37 @@ impl Default for Person {
 // If while parsing the age, something goes wrong, then return the default of
 // Person Otherwise, then return an instantiated Person object with the results
 
-// I AM NOT DONE
+
+fn is_bad_age(s:&str) -> bool {
+	for c in s.chars() {
+		if c.is_alphabetic() {
+			return true;
+		}
+	}
+	false
+} 
 
 impl From<&str> for Person {
     fn from(s: &str) -> Person {
+		let person = Person::default();
+		let str_iter = s.split(",");
+		let str_sp:Vec<&str> = str_iter.collect();
+		//println!("This is test: {}", str_sp.len());
+		if str_sp.len() == 2 {
+			if str_sp.contains(&"") {
+				return person;
+			}
+			else if is_bad_age(str_sp[1]) {
+				return person;
+			}
+			else {
+				let name = String::from(str_sp[0]);
+				let age: usize = str_sp[1].parse().unwrap();
+				let person = Person{name:name, age:age};
+				return person;
+			}
+		}
+		person
     }
 }
 
